@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <style type="text/css">
+        /* In a non-demo application, this style code should be moved to a css file */
+        input[type=checkbox] + label {
+            color: black;
+            font-style: normal;
+        }
+        input[type=checkbox]:checked + label {
+            color: grey;
+            font-style: italic;
+            text-decoration: line-through;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(":checkbox").click(function(){
+                $.ajax({
+                    type: 'PUT',
+                    data: "todo_id=" + this.id + "&is_completed_status=" + this.checked,
+                    success: function(data) {
+                        location.href = location.href;
+        }})})});
+    </script>
+
+    <script>
+        function deleteCompletedItems(todo_id) {
+            $.ajax({
+                    type: 'DELETE',
+                    data: "todo_id=" + todo_id,
+                    success: function(data) {
+                        location.href = location.href;
+        }})};
+    </script>
+</header>
+<body>
+
+<h1>{{user_name}} To Do List</h1>
+
+{% for item in todo_list %}
+<div>
+    <input type="checkbox" name="todo" id="{{item.id}}" {%if item.is_completed %}checked{% end %} >
+    <label>{{item.todo}}</label>
+    <button onclick="deleteCompletedItems('{{item.id}}')">Delete</button>
+</div>
+{% end %}
+
+
+
+<form method="post">
+    <input type="text" name="new_todo" placeholder="New To Do Item">
+    <input type="submit" value="Add">
+</form>
+
+
+</body>
+</html>
